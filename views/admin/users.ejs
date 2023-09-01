@@ -1,0 +1,110 @@
+<%- include ('../admin/layout/adminheader.ejs') %>
+
+
+
+                <!-- End of Topbar -->
+                <!-- content -->
+                <nav class="navbar navbar-light  justify-content-between mt-0 ">
+                    <a class="navbar-brand"></a>
+                    
+                    <!-- <form class="form-inline" action="/admin/search" method="get">
+                      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="username">
+                      <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+                    </form> -->
+                    
+                
+                  </nav>
+                <div class="container">
+                    <table class="table mt-5">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Fullname</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Action</th>
+                          <th scope="col">Status</th>
+            
+
+    
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <%var i=1 %>
+                        <% user.forEach((element)=> {%>
+                            <tr>
+                                <td><%= i%></td>
+                                <td><%= element.fullname%></td>
+                                <td><%= element.email%></td>
+                                <td>
+                                  <% if(element.unblockuser===true) { %>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                      data-bs-target="#blockModal-<%=element._id%>">
+                                      Block
+                                    </button>
+                                    <% }else{ %>
+                                      <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#blockModal-<%=element._id%>">
+                                        Restore
+                                      </button>
+                                      <%}%>
+                                 
+                                </td>
+                                <td>
+                                    <% if( element.unblockuser == true){%>
+                                        <button class="btn-success">Active</button>
+                                    <%}else{%>
+                                        <button class="btn-danger">Blocked</button>
+                                    <%}%>    
+                                </td>
+
+                                <div class="modal fade" id="blockModal-<%=element._id%>" tabindex="-1"
+                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="blockModal-<%=element._id%>">Block confirmation</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                          aria-label="Close"></button>
+                                      </div>
+                                      <% if(element.unblockuser===true) { %>
+                                        <div class="modal-body">
+                                          Are you sure you want to Block this user?
+                                        </div>
+                                        <% }else{ %>
+                                          <div class="modal-body">
+                                            Are you sure you want to UnBlock this user?
+                                          </div>
+                                          <%}%>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                              <% if(element.unblockuser===true) { %>
+                                                <a href="/admin/blockuser/?id=<%=element._id%>"><button type="button"
+                                                    class="btn btn-danger">Delete</button></a>
+                                                <% }else{ %>
+                                                  <a href="/admin/unblockuser/?id=<%=element._id%>"><button type="button"
+                                                      class="btn btn-primary">Restore</button></a>
+                                                  <%}%>
+                                            </div>
+                                    </div>
+                                  </div>
+                                </div>
+                    
+                            
+                            
+                            </tr>
+                            <% i++%>
+                            
+                        <%})%>
+
+
+                        </tbody>
+                    </table>
+                    </div>
+
+            
+
+            <!-- Footer -->
+            <%- include('../admin/layout/adminfooter.ejs') %>
+            <%- include('../admin/layout/adminscripts.ejs') %>

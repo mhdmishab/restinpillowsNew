@@ -1,0 +1,579 @@
+<%- include ('../users/layout/header.ejs') %>
+
+  <div style="height: 10rem; width: 100%;"></div>
+
+  <% const locationName="checkout" %>
+
+    <div class="row" style="width:1519px;">
+      <div class="site-section ">
+        <div class="container ms-5">
+          <div class="col-md-6">
+
+            <div class="row mb-5">
+              <div class="col-md-12">
+                <h2 class="h3 mb-3 text-black"> Address</h2>
+                <div class="p-3 p-lg-5 border justify-content-center align-items-center">
+
+                  <label class="col-xs-3 control-label">Add or Edit your addresses here...</label>
+
+                  <% if(userData){%>
+
+                    <div class="row">
+                      <div class="col-3">
+                        <button type="button" style="background-color: #05496c;" class="btn  mt-3"
+                          data-bs-toggle="modal" data-bs-target="#exampleModalLabelAddAdress" data-bs-whatever="@mdo">
+                          <p class="text-white">Add new address</p>
+                        </button>
+                      </div>
+                      <div class="col-5"></div>
+                      <div class="col-3">
+                        <button type="button" class="btn text-white mt-3" style="background-color: #05496c;"
+                          data-bs-toggle="modal" data-bs-target="#addressesModal">
+                          View Other Addresses
+                        </button>
+                      </div>
+                    </div>
+                    <%}else{%>
+
+                      <h5 class="text text-danger">For placing order you should have atleast permanent address.</h5><br>
+
+                      <h6 class="text text-info"><a href="/profile">Update your profile</a></h6>
+
+
+
+                      <% } %>
+                </div>
+
+                <div class="row mb-5">
+                  <div class="col-md-12">
+                    <h2 class="h3 mb-3 mt-3 text-black">Your Order</h2>
+                    <div class="p-3 p-lg-5 border">
+                      <h2>Payment</h2>
+
+
+
+
+                      <form id="placeOrder">
+
+                        <label class="col-xs-3 control-label mb-2 mt-2">Select Shipping Address</label>
+
+                        <select class="form-select mt-2" required name="address" id="deliveryAddress">
+                          <% userData?.addressDetails.forEach((address)=>{%>
+                            <option value="<%= address.housename %>,<%= address.postoffice%>,<%= address.landmark %>,<%=address.area
+                              %>,<%= address.district %>,<%=address.state %>,<%= address.pin %>">
+                              <%= address.housename %>,<%= address.postoffice%>,<%= address.landmark %>,<%=address.area
+                                      %>,<%= address.district %>,<%=address.state %>,<%= address.pin %>
+                            </option>
+                            <% }) %>
+                        </select>
+
+                        <div class="d-block my-3">
+                          <div class="form-check">
+                            <input id="credit" name="paymentMethod" type="radio" value="COD" class="form-check-input"
+                              checked />
+                            <label class="form-check-label" for="credit">Cash on Delivery</label>
+                          </div>
+                          <div class="form-check">
+                            <input id="credit" name="paymentMethod" type="radio" value="online"
+                              class="form-check-input" />
+                            <label class="form-check-label" for="credit">Online</label>
+                          </div>
+                          <h2 class="h3 mb-3 text-black"></h2>
+                          <div class="p-3 p-lg-5 border">
+
+                            <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
+                            <div class="input-group w-75">
+                              <input type="text" class="form-control text-uppercase" id="c_code"
+                                placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2"
+                                name="coupon">
+                              <div class="input-group-append">
+                                <button class="btn btn-primary btn-md" style="background-color: #05496c;" type="button"
+                                  onclick="applyCoupon()" id="couponapply">Apply</button>
+                              </div>
+                            </div>
+
+                          </div>
+                          <h5 class="text-muted mt-4">Amount to be paid</h5>
+                          <table class="table site-block-order-table mb-5">
+                            <thead>
+                              <th>Product</th>
+                              <th>Total</th>
+                            </thead>
+                            <tbody>
+                              <% productData.forEach(function(product) {%>
+                                <tr>
+                                  <td>
+                                    <%=product.productDetail.productname%> <strong class="mx-2">x</strong>
+                                      <%= product.productQuantity%>
+                                  </td>
+                                  <% var a=product.productDetail.price%>
+                                    <% var b=product.productQuantity%>
+                                      <% var c=a*b %>
+                                        <td>
+                                          <%= c %>₹
+                                        </td>
+                                </tr>
+                                <% }) %>
+                                  <tr>
+                                    <td><b>Total Amount</b></td>
+                                    <td>
+                                      <%=sum %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td><b>Discounted Amount</b></td>
+                                    <td id="discountedAmount">
+                                      <%=sum %>
+
+                                    </td>
+                                  </tr>
+                            </tbody>
+                          </table>
+                          <% if(userData){ %>
+
+                            <button class="btn btn-primary btn-lg py-3 btn-block mt-5"
+                              style="background-color: #05496c;" id="placeOrder-submit" type="button"
+                              onclick="placeOrder()">Place Order</button>
+
+                            <% } %>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- add address -->
+
+    <div class="modal fade" id="exampleModalLabelAddAdress" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabelAddAdress">
+              Add new Address
+            </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <form action="/addnewaddress/<%=locationName%>" method="post" id="checkoutaddAddressform"
+            onsubmit="return chkaddsubmitform()">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Housename:</label>
+                <input type="text" class="form-control" id="checkoutaddhousename" name="housename" />
+
+              </div>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Area:</label>
+                <input type="text" class="form-control" id="checkoutaddarea" name="area" />
+
+              </div>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Landmark:</label>
+                <input type="text" class="form-control" id="checkoutaddlandmark" name="landmark" />
+
+              </div>
+              <div class="mb-3">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="firstName">District</label>
+                    <input type="text" class="form-control" id="checkoutadddistrict" name="district" />
+
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="lastName">State</label>
+                    <input type="text" class="form-control" id="checkoutaddstate" name="state" />
+
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="firstName">Post office</label>
+                    <input type="text" class="form-control" id="checkoutaddpostoffice" name="postoffice" />
+
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="lastName">Pincode</label>
+                    <input type="text" class="form-control" id="checkoutaddpin" name="pin" />
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button type="submit" value="submit" class="btn text-white" style="background-color: #05496c;">
+                Add
+              </button>
+            </div>
+            <div id="alertaddaddresscheckout"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- edit address -->
+
+    <div class="modal fade" id="addressesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">View Addresses</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <ul>
+              <% if(userProfile?.addressDetails[1]){%>
+
+
+                <% let i=1 %>
+
+                  <% userProfile?.addressDetails.slice(1).forEach((address)=>{%>
+
+                    <li>
+
+
+                      <form method="post" action="/editaddress/<%=address?._id%>/<%=locationName%>">
+
+                        <div class="row mb-3">
+
+                          <h6>Address:<%=i%>
+                          </h6>
+                          <div class="col-sm-9 text-secondary ">
+                            <input type="text" name="housename" class="form-control my-2" placeholder="House name"
+                              value="<%= address?.housename  %> " required>
+                          </div>
+                          <!-- <div class="col-sm-3">
+                                  <p class="mt-4">Area</p>
+                                </div> -->
+                          <div class="col-sm-9 text-secondary mb-0 mt-3">
+                            <input type="text" placeholder="Area" name="area" class="form-control"
+                              value="<%= address?.area  %>" required>
+                          </div>
+                          <!-- <div class="col-sm-3">
+                                  <p class="mt-4">Landmark</p>
+                                </div> -->
+                          <div class="col-sm-9 text-secondary ml-10 mb-0 mt-3">
+                            <input type="text" placeholder="Landmark" name="landmark" class="form-control"
+                              value="<%= address?.landmark  %>" required>
+                          </div>
+                          <div class="d-flex form-outline flex-fill mb-0 mt-3">
+                            <input type="text" value="<%= address?.district  %>" placeholder="District" name="district"
+                              class="form-control" required />
+                            <input type="text" value="<%= address?.state  %>" placeholder="State" name="state"
+                              class="form-control" required />
+
+                          </div>
+
+                          <div class="d-flex form-outline flex-fill mb-0 mt-3">
+                            <input type="text" value="<%= address?.postoffice  %>" placeholder="Post office"
+                              name="postoffice" class="form-control" required />
+                            <input type="text" value="<%= address?.pin  %>" placeholder="Pin code" name="pin"
+                              class="form-control" required />
+
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                              data-bs-target="#exampleModal-<%=address?._id%>">
+                              Delete
+                            </button>
+
+                            <!-- delete modal -->
+                            <div class="modal fade" id="exampleModal-<%=address?._id%>" tabindex="-1"
+                              aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                              <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Delete confirmation
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                      aria-label="Close"></button>
+                                  </div>
+
+                                  <div class="modal-body">
+                                    Are you sure you want to delete this Address?
+                                  </div>
+
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                      data-bs-dismiss="modal">Close</button>
+
+                                    <a href="/deleteAddress/<%=address?._id%>/<%=locationName%>"><button type="button"
+                                        class="btn btn-danger">Delete</button></a>
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+
+                          </div>
+                          <div class="col-sm-3"></div>
+                          <div class="col-sm-5 text-secondary">
+                            <button type="submit" class="btn  px-4 mb-5 text-white"
+                              style="background-color: #05496c;">Save Changes</button>
+                          </div>
+                        </div>
+
+                      </form>
+
+                    </li>
+                    <% i++ %>
+                      <% }); %>
+
+                        <% }else{ %>
+                          <h5>No Data </h5>
+                          <% } %>
+
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <!-- <button type="button" class="btn btn-white "><a href="/logout"></a></button> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+      let totalAmountPaid;
+      let couponStatus = false;
+
+      if (couponStatus == false) {
+        totalAmountPaid = document.getElementById("discountedAmount").innerHTML;
+
+      }
+
+
+
+      function placeOrder() {
+        console.log("helloooooo")
+        let address = document.querySelector('#deliveryAddress').value;
+        // let couponcode = document.querySelector('#c_code').value;
+
+        console.log(address);
+        let payment = document.querySelector('input[name="paymentMethod"]:checked').value;
+        console.log(payment);
+
+
+
+        // console.log(couponcode);
+
+        // if (payment == "Online") {
+
+
+
+        let coupon = document.querySelector('#c_code').value;
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+
+          body: JSON.stringify(
+
+            {
+
+              payment: payment,
+              address: address,
+              totalAmountPaid: totalAmountPaid,
+              coupon: coupon,
+            }
+          )
+        }
+
+
+
+        fetch('/placeOrder', requestOptions)
+          .then((res) => res.json())
+          .then((newdata) => {
+
+            console.log("response in send then");
+            if (newdata.success) {
+              location.href = "/orderSuccess";
+            } else {
+              console.log(newdata)
+              razorPay(newdata)
+            }
+
+          })
+
+        // }
+      }
+
+
+      function applyCoupon() {
+        let couponcode = document.querySelector('#c_code').value;
+        let couponCode = couponcode.toUpperCase()
+
+        console.log("inside apply coupon");
+
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(
+            {
+              couponcode: couponCode,
+            }
+          )
+        }
+
+        fetch('/applycoupon', requestOptions)
+          .then((res) => res.json())
+          .then((response) => {
+            console.log("response in send then");
+            if (response.couponDeleted) {
+              Swal.fire({
+                title: "Coupon no longer exist!",
+                icon: "error",
+                confirmButtonText: "continue",
+              }).then(function () {
+                // location.reload()
+              });
+            }
+            else if (response.coupon) {
+              Swal.fire({
+                title: "Coupon already used!",
+                icon: "error",
+                confirmButtonText: "continue",
+              }).then(function () {
+                // location.reload()
+              });
+            }
+
+
+            else if (response.invalid) {
+
+              Swal.fire({
+                title: "Invalid Coupon!",
+                icon: "error",
+                confirmButtonText: "continue",
+              }).then(function () {
+                // location.reload()
+              });
+            } else if (response.total) {
+              console.log(response.total);
+              totalAmountPaid = response.total;
+              couponStatus = true;
+              document.getElementById('discountedAmount').innerText = totalAmountPaid;
+            } else {
+              // totalAmountPaid=document.getElementById('discountedAmount').innerText
+            }
+          })
+
+      }
+
+
+
+
+
+
+      function razorPay(order) {
+        console.log(order);
+        var options = {
+          "key": 'rzp_test_AKZuqO9DIb9bQK',
+          "amount": (order.amount),
+          "currency": "INR",
+          "name": "restinpillows",
+          "description": "Test Transaction",
+          "image": "/img/riplogo.png",
+          "order_id": order.id,
+          "handler": function (response) {
+
+            verifyPayment(response, order);
+          },
+          "prefill": {
+            "name": "restinpillows",
+            "email": "restinpillows77@gmail.com",
+            "contact": "4444444444"
+          },
+          "notes": {
+            "address": "Razorpay Corporate Office"
+          },
+          "theme": {
+            "color": "#DBCC8F"
+          }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+
+          location.href = "/paymentFail";
+        });
+        rzp1.open();
+      }
+
+
+
+      function verifyPayment(payment, order) {
+        console.log(payment)
+        console.log(order)
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(
+            {
+              payment: payment,
+              order: order,
+
+            }
+          )
+        }
+        console.log("middle of verify")
+
+        fetch('/verifypayment', requestOptions)
+          .then((res) => res.json())
+          .then((newdata) => {
+            console.log("response in send then");
+            console.log(newdata)
+            if (newdata.success) {
+              location.href = "/ordersuccess";
+
+            } else{
+              location.href = "/";
+            }
+
+          })
+      }
+    </script>
+
+    <script src="/javascripts/checkoutaddaddress.js"></script>
+
+
+
+
+
+
+
+
+    <%- include ('../users/layout/footer.ejs') %>
+
+      <%- include ('../users/layout/script.ejs') %>

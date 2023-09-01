@@ -1,0 +1,378 @@
+<%- include ('../admin/layout/adminheader.ejs') %>
+
+
+
+
+    <!-- End of Topbar -->
+
+
+    <body>
+
+    <!-- content -->
+    <nav class="navbar navbar-light  justify-content-between mt-0 ">
+        <a class="navbar-brand"></a>
+        <a href="/admin/addproducts"><button class="btn btn-outline-dark my-2 my-sm-0">Add-product</button></a>
+        <!-- <form class="form-inline" action="/admin/search" method="get">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+                            name="username">
+                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+                    </form> -->
+
+
+    </nav>
+    <div class="container-fluid">
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Sub-Category</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Status</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <% var i=1 %>
+                    <% product.forEach((item)=>{%>
+                        <tr>
+                            <td>
+                                <%= i%>
+                            </td>
+                            <td><img style="height: 3rem; width: 4rem;" src="/<%= item.image1%>" alt="">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal<%=item._id%>">
+                                    edit
+                                </button>
+                            </td>
+
+                            <!-- image outer modal -->
+
+                            <div class="modal fade" id="exampleModal<%=item._id%>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Images</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex justify-content-center border rounded border-dark p=2 my-2">
+                                                    <img src="/<%= item.image1%>" alt="Image 1" class="me-2" style="width: 80px;">
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#image1<%=item._id%>">
+                                                        edit
+                                                      </button>
+                                                </div>
+                                                <div class="d-flex justify-content-center border rounded border-dark p=2 my-2">
+                                                    <img src="/<%= item.image2%>" alt="Image 1" class="me-2" style="width: 80px;">
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#image2<%=item._id%>">
+                                                        edit
+                                                      </button>
+                                                </div>
+                                                <div class="d-flex justify-content-center border rounded border-dark p=2 my-2">
+                                                    <img src="/<%= item.image3%>" alt="Image 1" class="me-2" style="width: 80px;">
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#image3<%=item._id%>">
+                                                        edit
+                                                      </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- modal for edit image1 -->
+
+                            <div class="modal fade" id="image1<%=item._id%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <form id="changeimage1" action="/admin/changeImage1/<%=item._id%>" method="post" enctype="multipart/form-data"> 
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel">Change Image</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    
+                                      <div class="form-outline mb-1">
+                                        <label class="form-label">Change Image 1</label>
+                                        <input type="file" id="imagevalidatorimage1" class="form-control form-control-lg" name="myFile1">
+                                        <input type="hidden" name="image1" value="/<%= item.image1%>">
+                                      </div>
+                                    
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+
+                                  <!-- modal for edit image2 -->
+
+                                  <div class="modal fade" id="image2<%=item._id%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <form id="changeimage1" action="/admin/changeImage2/<%=item._id%>" method="post" enctype="multipart/form-data"> 
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">Change Image</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                        
+                                          <div class="form-outline mb-1">
+                                            <label class="form-label">Change Image 2</label>
+                                            <input type="file" id="imagevalidatorimage2" class="form-control form-control-lg" name="myFile2">
+                                            <input type="hidden" name="image1" value="/<%= item.image2%>">
+                                          </div>
+                                        
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                          <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                   <!-- modal for edit image3 -->
+
+                                   <div class="modal fade" id="image3<%=item._id%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <form id="changeimage1" action="/admin/changeImage3/<%=item._id%>" method="post" enctype="multipart/form-data"> 
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">Change Image</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                        
+                                          <div class="form-outline mb-1">
+                                            <label class="form-label">Change Image 3</label>
+                                            <input type="file" id="imagevalidatorimage3" class="form-control form-control-lg" name="myFile3">
+                                            <input type="hidden" name="image1" value="/<%= item.image3%>">
+                                          </div>
+                                        
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                          <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                            
+
+
+
+                            <td>
+                                <%= item.productname%>
+                            </td>
+                            <td>
+                                <%= item?.category?.categoryname %>
+                            </td>
+                            <td>
+                                <%= item?.subcategory?.subcategoryname %>
+                            </td>
+                            <td>
+                                <%= item.quantity%>
+                            </td>
+                            <td>
+                                <%= item.description%>
+                            </td>
+                            <td>₹<%= item.price%>
+                            </td>
+                            <td>
+                              <% if(item.unlist==false) { %>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                  data-bs-target="#listModal-<%=item?._id%>">
+                                  Unlist
+                                </button>
+                                <% }else{ %>
+                                  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#listModal-<%=item?._id%>">
+                                    Restore
+                                  </button>
+                                  <%}%>
+                                <a class="text-decoration-none text-white" href="/admin/editproduct?id=<%= item._id%>"><button type="button" class="btn btn-primary mt-1"> Edit</button></a></button>
+                            </td>
+                            <td>
+                                <% if( item.unlist==false){%>
+                                    <button class="btn-success">Active</button>
+                                    <%}else{%>
+                                        <button class="btn-danger">Unlisted</button>
+                                        <%}%>
+                            </td>
+                            <div class="modal fade" id="listModal-<%=item?._id%>" tabindex="-1"
+                              aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="listModal-<%=item?._id%>">List confirmation</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                      aria-label="Close"></button>
+                                  </div>
+                                  <% if(item.unlist==false) { %>
+                                    <div class="modal-body">
+                                      Are you sure you want to Unlist <%= item.productname%>?
+                                    </div>
+                                    <% }else{ %>
+                                      <div class="modal-body">
+                                        Are you sure you want to Restore <%= item.productname%>?
+                                      </div>
+                                      <%}%>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                          <% if(item.unlist==false) { %>
+                                            <a href="/admin/unlistproduct?id=<%= item._id%>"><button type="button"
+                                                class="btn btn-danger">Unlist</button></a>
+                                            <% }else{ %>
+                                              <a href="/admin/listproduct?id=<%= item._id%>"><button type="button"
+                                                  class="btn btn-primary">Restore</button></a>
+                                              <%}%>
+                                        </div>
+                                </div>
+                              </div>
+                            </div>
+
+                        </tr>
+
+                        <% i++ %>
+
+                            <%})%>
+
+
+
+            </tbody>
+        </table>
+    </div>
+    <%- include('../admin/layout/adminscripts.ejs') %>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+      document.querySelector("#imagevalidatorimage1").addEventListener("change", function () {
+        let fileCount = 0;
+        let maxFiles = 3;
+            // Loop through the selected files and check their types
+            for (let i = 0; i < this.files.length; i++) {
+                let fileType = this.files[i].type;
+                if (fileType != "image/jpeg" && fileType != "image/jpg" && fileType != "image/png" && fileType != "image/webp") {
+                    this.value = "";
+                    Swal.fire({
+                        title: "Invalid Fileformat",
+                        icon: "error",
+                        confirmButtonText: "continue"
+                    });
+                    return;
+                }
+                // Increment the file count if the file is an image
+                fileCount++;
+                // Check if the maximum number of files has been reached
+            }
+            if (fileCount != 1) {
+                    this.value = "";
+                    Swal.fire({
+                        title: "You should upload only one image here",
+                        icon: "error",
+                        confirmButtonText: "continue"
+                    })
+                    return;
+                }
+        });
+
+
+
+        document.querySelector("#imagevalidatorimage2").addEventListener("change", function () {
+        let fileCount = 0;
+        let maxFiles = 3;
+            // Loop through the selected files and check their types
+            for (let i = 0; i < this.files.length; i++) {
+                let fileType = this.files[i].type;
+                if (fileType != "image/jpeg" && fileType != "image/jpg" && fileType != "image/png" && fileType != "image/webp") {
+                    this.value = "";
+                    Swal.fire({
+                        title: "Invalid Fileformat",
+                        icon: "error",
+                        confirmButtonText: "continue"
+                    });
+                    return;
+                }
+                // Increment the file count if the file is an image
+                fileCount++;
+                // Check if the maximum number of files has been reached
+            }
+            if (fileCount != 1) {
+                    this.value = "";
+                    Swal.fire({
+                        title: "You should upload only one image here",
+                        icon: "error",
+                        confirmButtonText: "continue"
+                    })
+                    return;
+                }
+        });
+
+
+
+        document.querySelector("#imagevalidatorimage3").addEventListener("change", function () {
+        let fileCount = 0;
+        let maxFiles = 3;
+            // Loop through the selected files and check their types
+            for (let i = 0; i < this.files.length; i++) {
+                let fileType = this.files[i].type;
+                if (fileType != "image/jpeg" && fileType != "image/jpg" && fileType != "image/png" && fileType != "image/webp") {
+                    this.value = "";
+                    Swal.fire({
+                        title: "Invalid Fileformat",
+                        icon: "error",
+                        confirmButtonText: "continue"
+                    });
+                    return;
+                }
+                // Increment the file count if the file is an image
+                fileCount++;
+                // Check if the maximum number of files has been reached
+            }
+            if (fileCount != 1) {
+                    this.value = "";
+                    Swal.fire({
+                        title: "You should upload only one image here",
+                        icon: "error",
+                        confirmButtonText: "continue"
+                    })
+                    return;
+                }
+        });
+
+
+
+
+
+
+    </script>
+  </body>
+  
+
+
+
+
+    <!-- Footer -->
+    <%- include('../admin/layout/adminfooter.ejs') %>
+      

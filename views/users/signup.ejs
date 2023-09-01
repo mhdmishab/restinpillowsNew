@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+</head>
+
+<body style="background-image:url(/img/homebg.jpg);background-repeat: no-repeat; background-size: cover;">
+  <!-- Section: Design Block -->
+  <section class="text-center text-lg-start mt-4">
+
+
+
+    <!-- Jumbotron -->
+    <div class="container align-items-center justify-content-center ">
+      <div class="row g-0 align-items-center justify-content-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="card cascading-right " style="
+              background: hsla(0, 0%, 100%, 0.55);
+              backdrop-filter: blur(4px); border-radius:70px;
+              ">
+            <div class="card-body p-5 shadow-5 text-center justify-content-center align-items-center">
+              <div class="d-flex m-0">
+                <img class="riplogo rounded align-items-top m-0" style="height: 6rem; width: 6rem;"
+                  src="/img/riplogo.png">
+              </div>
+              <h2 class="fw-bold mb-4 " style="color: #05496C;">Sign up now</h2>
+
+
+              <form method="post" action="/signup" id="registration" onsubmit="return submitform()">
+                <!-- 2 column grid layout with text inputs for the first and last names -->
+
+                <div class="form-outline mb-4">
+                  <input type="name" id="signupfullname" class="form-control" name="fullname" placeholder="Full Name"
+                    style="border-radius: 18px;" />
+                </div>
+
+
+                <div class="form-outline mb-4">
+                  <input type="email" id="signupemail" class="form-control" name="email" placeholder="Email Address"
+                    style="border-radius: 18px;" />
+                </div>
+
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                  <input type="password" id="signuppassword" class="form-control" name="password" placeholder="Password"
+                    style="border-radius: 18px;" />
+                </div>
+
+                <!-- confirm Password input -->
+                <div class="form-outline mb-4">
+                  <input type="password" id="signupconfirmpassword" class="form-control" placeholder="Confirm Password"
+                    style="border-radius: 18px;" />
+                </div>
+
+
+
+                <!-- Submit button -->
+
+                <button type="submit" class="btn btn-block mt-3 mb-1 text-white"
+                  style="background-color:#05496C;border-radius: 10px;">
+                  Sign Up
+                </button>
+
+
+                <div class="alert text-danger " id="signupalertmsg" role="alert">
+                  <%= msg%>
+                </div>
+                <div id="signupalert"></div>
+
+                <!-- Register buttons -->
+
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Jumbotron -->
+  </section>
+  <!-- Section: Design Block -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+    integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+    crossorigin="anonymous"></script>
+
+  <script>
+
+    setTimeout(() => {
+      document.getElementById('alertmsg').innerHTML = `<div></div>`
+    }, 5000);
+
+  </script>
+
+
+
+  <script>
+    const regSignup = document.querySelector('#registration');
+    const fullnameSignup = regSignup.querySelector('#signupfullname');
+    const emailSignup = regSignup.querySelector('#signupemail');
+    const passwordSignup = regSignup.querySelector('#signuppassword');
+    const CpasswordSignup = regSignup.querySelector('#signupconfirmpassword');
+    const errorElementSignup = regSignup.querySelector('#signupalert')
+
+    function hideErrorMessage() {
+      errorElementSignup.innerHTML = "";
+    }
+    function showErrorMessage(message) {
+
+      errorElementSignup.innerHTML = `<div class="alert text-danger " role="alert">${message}</div>`
+      setTimeout(() => {
+        errorElementSignup.innerHTML = `<div></div>`
+      }, 5000);
+
+    }
+
+    function submitform() {
+      if (fullnameSignup.value.trim() === "") {
+
+        showErrorMessage("Name  is Required");
+        return false;
+      }
+
+      if (emailSignup.value.trim() === "") {
+
+        showErrorMessage("Email is Required");
+        return false;
+      }
+
+      let validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+      if (emailSignup.value.match(validRegex)) {
+
+      } else {
+        showErrorMessage("Email is not correct");
+        return false;
+      }
+
+      let numberRegex = /\d/;
+      let letterRegex = /[a-zA-Z]/;
+      let specialCharRegex = /[@#$!%*?&]/;
+
+
+
+
+      if (passwordSignup.value.trim() === "") {
+
+        showErrorMessage("Password is Required");
+        return false;
+      }
+
+
+
+
+      if (passwordSignup.value.length < 6) {
+
+        showErrorMessage("Password must be greater than 6 Characters");
+        return false;
+      }
+      if (passwordSignup.value.length >= 15) {
+
+        showErrorMessage("Password must be less than 15 Characters");
+        return false;
+      }
+      if (!numberRegex.test(passwordSignup.value)) {
+
+        showErrorMessage("Password must contain at least one number");
+        return false;
+      }
+      if (!letterRegex.test(passwordSignup.value)) {
+
+        showErrorMessage("Password must contain at least one letter");
+        return false;
+      }
+      if (!specialCharRegex.test(passwordSignup.value)) {
+
+        showErrorMessage("Password must contain at least one special character");
+        return false;
+      }
+
+
+
+
+
+
+      if (CpasswordSignup.value.trim() === "") {
+
+        showErrorMessage("Confirm your Password");
+        return false;
+      }
+      if (passwordSignup.value != CpasswordSignup.value) {
+
+        showErrorMessage("Passwords does not match");
+        return false;
+      }
+
+
+      hideErrorMessage();
+      return true;
+
+    }
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>
